@@ -3,7 +3,7 @@ import React from 'react';
 import {View, TouchableOpacity, Image} from 'react-native';
 import CustomInput from '../../CustomInput';
 import {ContainerMail} from '../../../styles/RequestScreenStyles';
-
+import linkIcon from '../../../assets/images/linkIcon.png';
 interface PaymentLinkBoxProps {
   amount: string;
   onScanPress: () => void;
@@ -19,6 +19,7 @@ const PaymentLinkBox: React.FC<PaymentLinkBoxProps> = ({
       <CustomInput
         style={{width: 267, alignSelf: 'flex-start'}}
         value={paymentLink}
+        image={linkIcon}
         onChangeText={() => {}}
       />
       <TouchableOpacity

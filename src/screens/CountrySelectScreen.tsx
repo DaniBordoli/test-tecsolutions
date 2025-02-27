@@ -9,22 +9,22 @@ const countryCodes = [
   {
     code: '+54',
     country: 'Argentina',
-    imageSource: require('../assets/images/flagUsa.png'),
+    imageSource: require('../assets/images/flagLargeArg.png'),
   },
   {
     code: '+34',
     country: 'España',
-    imageSource: require('../assets/images/flagUsa.png'),
+    imageSource: require('../assets/images/flagSpain.png'),
   },
   {
     code: '+240',
     country: 'Equatorial Guinea',
-    imageSource: require('../assets/images/flagUsa.png'),
+    imageSource: require('../assets/images/flagGuinea.png'),
   },
   {
     code: '+30',
     country: 'Grecia',
-    imageSource: require('../assets/images/flagUk.png'),
+    imageSource: require('../assets/images/flagGrek.png'),
   },
   {
     code: '+500',
@@ -34,12 +34,12 @@ const countryCodes = [
   {
     code: '+502',
     country: 'Guatemala',
-    imageSource: require('../assets/images/flagUk.png'),
+    imageSource: require('../assets/images/flagGua.png'),
   },
   {
     code: '+592',
     country: 'Guyana',
-    imageSource: require('../assets/images/flagUk.png'),
+    imageSource: require('../assets/images/flagTwo.png'),
   },
 ];
 
@@ -47,8 +47,11 @@ export default function CountrySelectScreen({navigation, route}) {
   const onSelect = route?.params?.onSelect || (() => {});
   const [search, setSearch] = useState('');
   const [filteredCountries, setFilteredCountries] = useState(countryCodes);
+  const initialSelectedCountry = route?.params?.selectedCountry || null;
+  const [selectedCountry, setSelectedCountry] = useState(initialSelectedCountry);
 
   const handlePress = country => {
+    setSelectedCountry(country.code);
     onSelect(country.code);
     navigation.goBack();
   };
@@ -96,6 +99,7 @@ export default function CountrySelectScreen({navigation, route}) {
               countryCode={item.code}
               imageSource={item.imageSource}
               onPress={() => handlePress(item)}
+              selected={item.code === selectedCountry}
             />
           )}
         />

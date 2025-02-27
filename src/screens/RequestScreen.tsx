@@ -8,6 +8,7 @@ import ContactOptions from '../components/molecules/ContactOptions/ContactOption
 import CustomButton from '../components/atoms/CustomButton';
 import {useNavigation} from '@react-navigation/native';
 import {usePaymentWebSocket} from '../hooks/usePaymentWebSocket';
+import walletIcon from '../assets/images/walletIcon.png' // Import wallet icon
 
 export default function RequestScreen({route}) {
   const {amount, description, currency, paymentData} = route.params;
@@ -16,6 +17,7 @@ export default function RequestScreen({route}) {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [showSendButton, setShowSendButton] = useState(false);
   const [isValid, setIsValid] = useState(true);
+  const [selectedCountry, setSelectedCountry] = useState('+34'); // Add state for selected country
 
   const paymentStatus = usePaymentWebSocket(paymentData.identifier);
   console.log('paymentStatus', paymentStatus);
@@ -30,11 +32,12 @@ export default function RequestScreen({route}) {
 
   const handleCountrySelect = (selectedCode: string) => {
     setCountryCode(selectedCode);
+    setSelectedCountry(selectedCode); // Add this line to update the selected country
   };
 
   const handlePhoneNumberChange = (text: string) => {
     const numericText = text.replace(/[^0-9]/g, '');
-    if (numericText.length <= 8) {
+    if (numericText.length <= 10) {
       setPhoneNumber(numericText);
       setShowSendButton(numericText.length > 7);
     }
@@ -62,6 +65,7 @@ export default function RequestScreen({route}) {
           onCountrySelect={() =>
             navigation.navigate('CountrySelectScreen', {
               onSelect: handleCountrySelect,
+              selectedCountry: selectedCountry, 
             })
           }
         />
@@ -73,6 +77,7 @@ export default function RequestScreen({route}) {
             isValid={isValid}
             disabled={!isValid}
             onPress={() => navigation.goBack()}
+            icon={walletIcon} 
           />
         </ContainerButton>
       </Container>

@@ -17,6 +17,7 @@ const AppNavigator: React.FC = () => {
       screenOptions={{
         headerShown: false,
       }}>
+      
       <Stack.Screen name="Home" component={HomeScreen} />
       <Stack.Screen name="CurrencySelect" component={CurrencySelect} />
       <Stack.Screen name="RequestScreen" component={RequestScreen} />

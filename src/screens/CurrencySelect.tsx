@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {View, FlatList, TouchableOpacity} from 'react-native';
 import {Container, Navbar, Title} from '../styles/HomeScreenStyles';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -8,30 +8,40 @@ import SearchInput from '../components/SearchInput';
 const currencies = [
   {
     name: 'Dolar Estadounidense',
-    code: '$',
-    symbol: 'USD',
+    symbol: '$',
+    code: 'USD',
     imageSource: require('../assets/images/flagUsa.png'),
   },
   {
     name: 'Euro',
-    code: '€',
-    symbol: 'EUR',
+    symbol: '€',
+    code: 'EUR',
     imageSource: require('../assets/images/flagRounded.png'),
   },
   {
     name: 'Libra Esterlina',
-    code: '£',
-    symbol: 'GBP',
+    symbol: '£',
+    code: 'GBP',
     imageSource: require('../assets/images/flagUk.png'),
   },
 ];
 
 export default function CurrencySelect({navigation, route}) {
-  const {onSelect} = route.params;
+  const {onSelect, selectedCurrency: initialSelectedCurrency} = route.params;
   const [search, setSearch] = useState('');
   const [filteredCurrencies, setFilteredCurrencies] = useState(currencies);
+  const [selectedCurrency, setSelectedCurrency] = useState(initialSelectedCurrency?.code || null);
+
+  useEffect(() => {
+    console.log('Entered CurrencySelect screen');
+    if (selectedCurrency) {
+      console.log('Previously selected currency:', selectedCurrency);
+    }
+  }, [selectedCurrency]);
 
   const handlePress = currency => {
+    console.log('Selected currency:', currency);
+    setSelectedCurrency(currency.code);
     onSelect(currency);
     navigation.goBack();
   };
@@ -52,7 +62,6 @@ export default function CurrencySelect({navigation, route}) {
       <Navbar>
         <TouchableOpacity
           style={{
-            backgroundColor: '#EFF2F7',
             borderRadius: 50,
             padding: 10,
             marginRight: 10,
@@ -76,9 +85,10 @@ export default function CurrencySelect({navigation, route}) {
           renderItem={({item}) => (
             <CurrencyItem
               imageSource={item.imageSource}
+              currencyCode={item.code}
               currencyName={item.name}
-              currencyCode={item.symbol}
               onPress={() => handlePress(item)}
+              selected={item.code === selectedCurrency}
             />
           )}
         />

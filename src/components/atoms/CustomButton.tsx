@@ -1,6 +1,7 @@
 // src/components/atoms/CustomButton.tsx
 import React from 'react';
 import styled from 'styled-components/native';
+import { Image, ImageSourcePropType } from 'react-native';
 
 interface ButtonProps {
   isValid: boolean;
@@ -16,6 +17,11 @@ const Button = styled.TouchableOpacity<ButtonProps>`
   justify-content: center;
   width: 90%;
   height: 56px;
+`;
+
+const ButtonContent = styled.View`
+  flex-direction: row;
+  align-items: center;
 `;
 
 interface ButtonTextProps {
@@ -38,6 +44,7 @@ interface CustomButtonProps {
   style?: any;
   titleStyle?: any;
   disabled?: boolean;
+  icon?: ImageSourcePropType;
 }
 
 const CustomButton: React.FC<CustomButtonProps> = ({
@@ -47,6 +54,7 @@ const CustomButton: React.FC<CustomButtonProps> = ({
   style,
   titleStyle,
   disabled,
+  icon,
 }) => {
   return (
     <Button
@@ -54,9 +62,12 @@ const CustomButton: React.FC<CustomButtonProps> = ({
       isValid={isValid}
       style={style}
       disabled={disabled}>
-      <ButtonText titleStyle={titleStyle} isValid={isValid}>
-        {title}
-      </ButtonText>
+      <ButtonContent>
+        <ButtonText titleStyle={titleStyle} isValid={isValid}>
+          {title}
+        </ButtonText>
+        {icon && <Image source={icon} style={{ marginLeft: 8, width: 30, height: 30 }} />}
+      </ButtonContent>
     </Button>
   );
 };

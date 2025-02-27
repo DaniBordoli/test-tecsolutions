@@ -9,6 +9,7 @@ import {
   BoxText,
   Overlay,
 } from '../styles/PaymentReceivedStyles';
+import CustomButton from '../components/atoms/CustomButton';
 
 export default function PaymentReceivedScreen() {
   const navigation = useNavigation();
@@ -32,7 +33,7 @@ export default function PaymentReceivedScreen() {
           alignItems: 'center',
           marginTop: '50%',
         }}>
-        <Icon name="check-circle" size={100} color="green" />
+        <Image source={require('../assets/images/greenCheck.png')} style={{ width: 124, height: 124  }} />
         <Text
           style={{
             color: '#002859',

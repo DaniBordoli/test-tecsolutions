@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components/native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { TouchableOpacity } from 'react-native';
@@ -9,6 +9,8 @@ const CountryContainer = styled.View`
   margin-top: 20px;
   margin-left: 20px;
   width: 100%;
+  background-color: ${props => (props.pressed ? '#EFF2F7' : 'transparent')};
+  padding: 10px 0;
 `;
 
 const CountryImage = styled.Image`
@@ -36,16 +38,33 @@ const ChevronIcon = styled(Icon)`
   color: gray;
 `;
 
-export default function CountryItem({ imageSource, countryName, countryCode, onPress }) {
+const SelectedIcon = styled(Icon)`
+  margin-left: auto;
+  margin-right: 70px;
+  color: #002859;
+`;
+
+export default function CountryItem({ imageSource, countryName, countryCode, onPress, selected }) {
+  const [pressed, setPressed] = useState(false);
+
   return (
-    <TouchableOpacity onPress={onPress}>
-      <CountryContainer>
+    <TouchableOpacity
+      activeOpacity={1}
+      onPressIn={() => setPressed(true)}
+      onPressOut={() => setPressed(false)}
+      onPress={onPress}
+    >
+      <CountryContainer pressed={pressed}>
         <CountryImage source={imageSource} />
         <CountryText>
           <CountryName bold>{countryCode}</CountryName>
           <CountryName gray>{countryName}</CountryName>
         </CountryText>
-        <ChevronIcon name="chevron-forward" size={24} color="#002859" />
+        {selected ? (
+          <SelectedIcon name="checkmark-circle" size={24} />
+        ) : (
+          <ChevronIcon name="chevron-forward" size={24} />
+        )}
       </CountryContainer>
     </TouchableOpacity>
   );

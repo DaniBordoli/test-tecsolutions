@@ -5,5 +5,5 @@ export const parseAmount = (text: string, currency: Currency): string => {
   if (numericValue.length > 1 && numericValue.startsWith('0')) {
     numericValue = numericValue.substring(1);
   }
-  return `${numericValue} ${currency.code}`;
+  return `${numericValue} ${currency.symbol}`;
 };

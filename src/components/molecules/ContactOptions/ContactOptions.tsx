@@ -3,6 +3,9 @@ import React from 'react';
 import {TouchableOpacity, Linking, Share} from 'react-native';
 import CustomInput from '../../CustomInput';
 import {ContainerMail} from '../../../styles/RequestScreenStyles';
+import smsIcon from '../../../assets/images/smsIcon.png';
+import whatsappIcon from '../../../assets/images/whatsappIcon.png';
+import exportIcon from '../../../assets/images/exportIcon.png';
 
 interface ContactOptionsProps {
   phoneNumber: string;
@@ -42,23 +45,17 @@ const ContactOptions: React.FC<ContactOptionsProps> = ({
   };
 
   const handleWhatsAppShare = () => {
-    const numericPhone = phoneNumber.replace(/[^0-9]/g, '');
+    const numericPhone = `${countryCode.slice(1)}${phoneNumber.replace(/[^0-9]/g, '')}`;
     const message = `Paga tu compra en: ${paymentLink}`;
-    const url = `whatsapp://send?phone=${numericPhone}&text=${encodeURIComponent(
-      message,
-    )}`;
-    Linking.canOpenURL(url)
-      .then(supported => {
-        if (supported) {
-          Linking.openURL(url);
-        } else {
-          console.error('WhatsApp no está instalado en el dispositivo.');
-        }
-      })
-      .catch(err => console.error('Error al compartir en WhatsApp', err));
-  };
-  const showSendButton = phoneNumber.replace(/[^0-9]/g, '').length >= 8;
+    const url = `whatsapp://send?phone=${numericPhone}&text=${encodeURIComponent(message)}`;
 
+    Linking.openURL(url).catch(err => {
+      console.error('Error al compartir en WhatsApp', err);
+      alert('WhatsApp no está instalado en el dispositivo.');
+    });
+  };
+
+  const showSendButton = phoneNumber.replace(/[^0-9]/g, '').length >= 9;
   return (
     <>
       <ContainerMail>
@@ -66,7 +63,7 @@ const ContactOptions: React.FC<ContactOptionsProps> = ({
           <CustomInput
             value="Enviar por correo electronico"
             onChangeText={() => {}}
-            iconName="envelope"
+            image={smsIcon}
             editable={false}
           />
         </TouchableOpacity>
@@ -76,7 +73,7 @@ const ContactOptions: React.FC<ContactOptionsProps> = ({
           value={phoneNumber}
           prefix={countryCode}
           onChangeText={onPhoneNumberChange}
-          iconName="whatsapp"
+          image={whatsappIcon}
           iconName2="chevron-down"
           onIcon2Press={onCountrySelect}
           editable={true}
@@ -90,7 +87,7 @@ const ContactOptions: React.FC<ContactOptionsProps> = ({
           <CustomInput
             value="Compartir con otras aplicaciones"
             onChangeText={() => {}}
-            iconName="share-square-o"
+            image={exportIcon}
             editable={false}
           />
         </TouchableOpacity>

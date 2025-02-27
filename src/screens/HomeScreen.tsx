@@ -65,10 +65,10 @@ export default function HomeScreen({navigation}: HomeScreenProps) {
   };
 
   const handleCurrencySelectButton = (selectedCurrency: Currency): void => {
+    console.log('HomeScreen selected currency:', selectedCurrency);
     setCurrency({symbol: selectedCurrency.symbol, code: selectedCurrency.code});
-    setAmount(`0,00 ${selectedCurrency.code}`);
+    setAmount(`0,00 ${selectedCurrency.symbol}`); 
   };
-
   const handleContinuar = (): void => {
     if (!isValid) {
       return;
@@ -83,10 +83,11 @@ export default function HomeScreen({navigation}: HomeScreenProps) {
         keyboardShouldPersistTaps="handled">
         <Container>
           <PaymentNavbar
-            currencySymbol={currency.symbol}
+            currencySymbol={currency.code}
             onSelect={() =>
               navigation.navigate('CurrencySelect', {
                 onSelect: handleCurrencySelectButton,
+                selectedCurrency: currency,
               })
             }
           />

@@ -1,7 +1,8 @@
 import React from 'react';
 import styled from 'styled-components/native';
-import { Modal, TouchableOpacity, View, Text } from 'react-native';
+import { Modal, TouchableOpacity, View, Text, Image } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons'; 
+import { BlurView } from '@react-native-community/blur'; 
 
 const PopupContainer = styled.View`
   flex: 1;
@@ -65,6 +66,27 @@ const SubMessageText = styled.Text`
   text-align: center;
   margin-bottom: 20px;`;
 
+const BlurredBackground = styled.View`
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 40, 89, 1);
+`;
+
+const BlurOverlay = styled(BlurView).attrs({
+  blurType: 'light',
+  blurAmount: 5,
+  overlayColor: 'rgba(0, 40, 89, 0.3)', 
+})`
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+`;
+
 interface PopupProps {
   onClose: () => void;
 }
@@ -72,10 +94,12 @@ interface PopupProps {
 const Popup: React.FC<PopupProps> = ({ onClose }) => {
   return (
     <Modal transparent={true} animationType="slide">
+      <BlurredBackground />
+      <BlurOverlay />
       <PopupContainer>
         <PopupContent>
           <IconContainer>
-            <Icon name="check-circle" size={64} color="aqua" />
+            <Image source={require('../assets/images/aquaCheck.png')} style={{ width: 64, height: 64 }} />
           </IconContainer>
           <MessageText>Solicitud Enviada</MessageText>
           <SubMessageText>

@@ -2,3 +2,5 @@ rootProject.name = 'myTech'
 apply from: file("../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesSettingsGradle(settings)
 include ':app'
 includeBuild('../node_modules/@react-native/gradle-plugin')
+include ':react-native-community-blur'
+project(':react-native-community-blur').projectDir = new File(rootProject.projectDir, '../node_modules/@react-native-community/blur/android')
