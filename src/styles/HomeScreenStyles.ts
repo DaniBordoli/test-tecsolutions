@@ -28,22 +28,6 @@ export const Title = styled.Text`
   font-family: 'Mulish-Medium';
 `;
 
-export const SelectContainer = styled.TouchableOpacity`
-  flex-direction: row;
-  align-items: center;
-  background-color: #D3DCE64D;
-  border-radius: 24px;
-  padding-horizontal: 10px;
-  padding-vertical: 5px;
-`;
-
-export const SelectText = styled.Text`
-  font-size: 16px;
-  margin-right: 5px;
-  color: #002859;
-  font-weight: bold;
-`;
-
 export const Content = styled.View`
   flex: 1;
 `;
@@ -61,14 +45,14 @@ export const Placeholder = styled.TouchableOpacity`
 
 export const textInput = styled.Text`
   font-size: 60px;
-  color: ${({ isDefault }) => (isDefault ? '#C0CCDA' : '#002859')};
+  color: ${({isDefault}) => (isDefault ? '#C0CCDA' : '#002859')};
   font-weight: bold;
 `;
 
 export const StyledTextInput = styled.TextInput`
   font-size: 60px;
   font-weight: bold;
-  color: ${({ isDefault }) => (isDefault ? '#C0CCDA' : '#002859')};
+  color: ${({isDefault}) => (isDefault ? '#C0CCDA' : '#035AC5')};
   text-align: center;
   width: 100%;
   font-family: 'Mulish-Medium';
@@ -81,4 +65,17 @@ export const Label = styled.Text`
   color: #002859;
   align-self: flex-start;
   margin-left: 20px;
+`;
+
+export const ContinuarContainer = styled.View`
+  align-items: center;
+  width: 100%;
+  margin-bottom: 20px;
+  position: absolute;
+  bottom: 0;
+`;
+
+export const FlexContainer = styled.View`
+  flex: 1;
+  align-items: center;
 `;

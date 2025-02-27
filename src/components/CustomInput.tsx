@@ -1,18 +1,24 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import styled from 'styled-components/native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import { TextInput, TextInputProps, StyleProp, ViewStyle, TouchableOpacity } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import {
+  TextInput,
+  TextInputProps,
+  StyleProp,
+  ViewStyle,
+  TouchableOpacity,
+} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
 import Popup from './Popup'; // Import the Popup component
 
-const Container = styled.View<{ isFocused: boolean }>`
+const Container = styled.View<{isFocused: boolean}>`
   flex-direction: row;
   align-items: center;
   width: 339px;
   height: 66px;
   border-radius: 6px;
   border-width: 1px;
-  border-color: ${({ isFocused }) => (isFocused ? '#035AC5' : '#D3DCE6')};
+  border-color: ${({isFocused}) => (isFocused ? '#035AC5' : '#D3DCE6')};
   padding: 0 16px;
   margin-top: 20px;
 `;
@@ -33,15 +39,14 @@ const Input = styled.TextInput`
 `;
 
 const SendButton = styled.TouchableOpacity`
-  background-color: #035AC5;
+  background-color: #035ac5;
   padding: 10px;
   border-radius: 4px;
   height: 30px;
-padding-top: 4px;
-padding-right: 8px;
-padding-bottom: 4px;
-padding-left: 8px;
-
+  padding-top: 4px;
+  padding-right: 8px;
+  padding-bottom: 4px;
+  padding-left: 8px;
 `;
 
 const SendButtonText = styled.Text`
@@ -64,7 +69,18 @@ interface CustomInputProps extends TextInputProps {
   onSendPress?: () => void;
 }
 
-const CustomInput: React.FC<CustomInputProps> = ({ style, value, onChangeText, iconName = "link", iconName2 = "", onIcon2Press, editable = false, showSendButton = false, prefix = "", onSendPress }) => {
+const CustomInput: React.FC<CustomInputProps> = ({
+  style,
+  value,
+  onChangeText,
+  iconName = 'link',
+  iconName2 = '',
+  onIcon2Press,
+  editable = false,
+  showSendButton = false,
+  prefix = '',
+  onSendPress,
+}) => {
   const [isFocused, setIsFocused] = useState(false);
   const [isPopupVisible, setIsPopupVisible] = useState(false);
 
@@ -72,7 +88,7 @@ const CustomInput: React.FC<CustomInputProps> = ({ style, value, onChangeText, i
     if (onSendPress) {
       onSendPress();
     }
-    setIsPopupVisible(true); 
+    setIsPopupVisible(true);
   };
 
   return (
@@ -97,7 +113,7 @@ const CustomInput: React.FC<CustomInputProps> = ({ style, value, onChangeText, i
           editable={editable}
           onFocus={() => setIsFocused(true)}
           onBlur={() => setIsFocused(false)}
-          placeholder={prefix ? "" : "Enter text"}
+          placeholder={prefix ? '' : 'Enter text'}
           placeholderTextColor="#002859"
         />
         {showSendButton && value && (

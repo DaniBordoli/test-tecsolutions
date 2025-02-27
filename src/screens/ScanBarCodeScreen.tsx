@@ -1,23 +1,29 @@
+// src/screens/ScanBarCodeScreen.tsx
 import React from 'react';
-import { View, Text, TouchableOpacity, Image } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import {TouchableOpacity} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { Navbar, Title } from '../styles/HomeScreenStyles';
-import qrCodeImage from '../assets/images/qrCode.png';
+import {Navbar} from '../styles/HomeScreenStyles';
 import {
   Container,
   Box,
   BoxText,
   Overlay,
   ImageBox,
-  StyledImage,
   AmountText,
   AutoUpdateText,
 } from '../styles/ScanBarCodeStyles';
+import QRCode from 'react-native-qrcode-svg';
+import qrCodeImage from '../assets/images/qrCode.png';
 
-export default function ScanBarCodeScreen({ route }) {
+export default function ScanBarCodeScreen({route}) {
   const navigation = useNavigation();
-  const { amount } = route.params;
+  const {amount, paymentLink} = route.params as {
+    amount: string;
+    paymentLink: string;
+  };
+
+  console.log('paymentLinkQR', paymentLink);
 
   return (
     <Container>
@@ -29,20 +35,29 @@ export default function ScanBarCodeScreen({ route }) {
             padding: 10,
             marginRight: 10,
           }}
-          onPress={() => navigation.goBack()}
-        >
+          onPress={() => navigation.goBack()}>
           <Icon name="arrow-back" size={24} color="#002859" />
         </TouchableOpacity>
       </Navbar>
       <Box>
         <Icon name="error-outline" size={24} color="#002859" />
-        <BoxText>Escanea el QR y serás redirigido a la pasarela de pago de Bitnovo Pay.</BoxText>
+        <BoxText>
+          Escanea el QR y serás redirigido a la pasarela de pago de Bitnovo Pay.
+        </BoxText>
       </Box>
       <ImageBox>
-        <StyledImage source={qrCodeImage} />
+        <QRCode
+          value={paymentLink}
+          size={300}
+          color="#035AC5"
+          backgroundColor="white"
+          logo={qrCodeImage}
+        />
       </ImageBox>
       <AmountText>{amount}</AmountText>
-      <AutoUpdateText>Esta pantalla se actualizará automáticamente.</AutoUpdateText>
+      <AutoUpdateText>
+        Esta pantalla se actualizará automáticamente.
+      </AutoUpdateText>
       <Overlay />
     </Container>
   );
