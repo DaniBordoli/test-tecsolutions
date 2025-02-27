@@ -24,8 +24,6 @@ export function usePaymentWebSocket(identifier: string) {
     socket.onmessage = event => {
       try {
         const data: PaymentStatusMessage = JSON.parse(event.data);
-        console.log('Mensaje recibido', data);
-        // Por ejemplo, si data.status === 'completed' actualizamos el estado
         setMessage(data);
       } catch (error) {
         console.error('Error parseando el mensaje', error);

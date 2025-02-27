@@ -3,12 +3,8 @@ import {View, Text, TouchableOpacity, Image} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {Navbar, Title} from '../styles/HomeScreenStyles';
-import {
-  Container,
-  Box,
-  BoxText,
-  Overlay,
-} from '../styles/PaymentReceivedStyles';
+import {Container, Overlay} from '../styles/PaymentReceivedStyles';
+import CustomButton from '../components/atoms/CustomButton';
 
 export default function PaymentReceivedScreen() {
   const navigation = useNavigation();
@@ -62,7 +58,7 @@ export default function PaymentReceivedScreen() {
           titleStyle={{color: '#035AC5'}}
           isValid={isValid}
           disabled={!isValid}
-          onPress={() => navigation.goBack()}
+          onPress={() => navigation.navigate('Home')}
         />
       </View>
     </Container>

@@ -8,6 +8,7 @@ import ContactOptions from '../components/molecules/ContactOptions/ContactOption
 import CustomButton from '../components/atoms/CustomButton';
 import {useNavigation} from '@react-navigation/native';
 import {usePaymentWebSocket} from '../hooks/usePaymentWebSocket';
+import LoadingOverlay from '../components/atoms/LoadingOverlay';
 
 export default function RequestScreen({route}) {
   const {amount, description, currency, paymentData} = route.params;
@@ -18,11 +19,12 @@ export default function RequestScreen({route}) {
   const [isValid, setIsValid] = useState(true);
 
   const paymentStatus = usePaymentWebSocket(paymentData.identifier);
+
   console.log('paymentStatus', paymentStatus);
 
   useEffect(() => {
     if (paymentStatus) {
-      if (paymentStatus.status === 'CA') {
+      if (paymentStatus.status === 'CO') {
         navigation.navigate('PaymentReceivedScreen', {paymentData});
       }
     }
@@ -41,41 +43,46 @@ export default function RequestScreen({route}) {
   };
 
   return (
-    <ScrollView
-      contentContainerStyle={{flexGrow: 1}}
-      keyboardShouldPersistTaps="handled">
-      <Container>
-        <PaymentRequestHeader amount={amount} />
-        <PaymentLinkBox
-          onScanPress={() =>
-            navigation.navigate('ScanBarCodeScreen', {
-              paymentLink: paymentData.web_url,
-            })
-          }
-          paymentLink={paymentData.web_url}
-        />
-        <ContactOptions
-          paymentLink={paymentData.web_url}
-          phoneNumber={phoneNumber}
-          onPhoneNumberChange={handlePhoneNumberChange}
-          countryCode={countryCode}
-          onCountrySelect={() =>
-            navigation.navigate('CountrySelectScreen', {
-              onSelect: handleCountrySelect,
-            })
-          }
-        />
-        <ContainerButton>
-          <CustomButton
-            style={{backgroundColor: '#D3DCE6'}}
-            title="Nueva solicitud"
-            titleStyle={{color: '#035AC5'}}
-            isValid={isValid}
-            disabled={!isValid}
-            onPress={() => navigation.goBack()}
+    <>
+      <ScrollView
+        contentContainerStyle={{flexGrow: 1}}
+        keyboardShouldPersistTaps="handled">
+        <Container>
+          <PaymentRequestHeader amount={amount} />
+          <PaymentLinkBox
+            onScanPress={() =>
+              navigation.navigate('ScanBarCodeScreen', {
+                paymentLink: paymentData.web_url,
+              })
+            }
+            paymentLink={paymentData.web_url}
           />
-        </ContainerButton>
-      </Container>
-    </ScrollView>
+          <ContactOptions
+            paymentLink={paymentData.web_url}
+            phoneNumber={phoneNumber}
+            onPhoneNumberChange={handlePhoneNumberChange}
+            countryCode={countryCode}
+            onCountrySelect={() =>
+              navigation.navigate('CountrySelectScreen', {
+                onSelect: handleCountrySelect,
+              })
+            }
+          />
+          <ContainerButton>
+            <CustomButton
+              style={{backgroundColor: '#D3DCE6'}}
+              title="Nueva solicitud"
+              titleStyle={{color: '#035AC5'}}
+              isValid={isValid}
+              disabled={!isValid}
+              onPress={() => navigation.goBack()}
+            />
+          </ContainerButton>
+        </Container>
+      </ScrollView>
+      {paymentStatus && paymentStatus.status === 'AC' && (
+        <LoadingOverlay message="Estamos esperando el pago..." />
+      )}
+    </>
   );
 }

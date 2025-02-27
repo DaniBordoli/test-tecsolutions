@@ -51,6 +51,7 @@ export default function HomeScreen({navigation}: HomeScreenProps) {
 
   useEffect(() => {
     if (paymentData) {
+      console.log('paymentData en home screen', paymentData);
       navigation.navigate('RequestScreen', {
         paymentData,
         amount,

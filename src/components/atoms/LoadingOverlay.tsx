@@ -14,9 +14,20 @@ const Overlay = styled.View`
   align-items: center;
 `;
 
-const LoadingOverlay: React.FC = () => (
+const MessageText = styled.Text`
+  margin-top: 10px;
+  color: #ffffff;
+  font-size: 18px;
+`;
+
+interface LoadingOverlayProps {
+  message?: string;
+}
+
+const LoadingOverlay: React.FC<LoadingOverlayProps> = ({message}) => (
   <Overlay>
     <ActivityIndicator size="large" color="#ffffff" />
+    {message && <MessageText>{message}</MessageText>}
   </Overlay>
 );
 
