@@ -18,12 +18,15 @@ const PaymentLinkBox: React.FC<PaymentLinkBoxProps> = ({
   const handleInputPress = () => {
     Clipboard.setString(paymentLink);
   };
+
+  const formattedPaymentLink = paymentLink.replace(/^https?:\/\//, '');
+
   return (
     <ContainerMail style={{justifyContent: 'space-between', marginTop: 20}}>
       <TouchableOpacity onPress={handleInputPress}>
         <CustomInput
-          style={{width: 267, alignSelf: 'flex-start'}}
-          value={paymentLink}
+          style={{width: 285, alignSelf: 'flex-start'}}
+          value={formattedPaymentLink}
           image={linkIcon}
           onChangeText={() => {}}
           editable={false}

@@ -24,7 +24,7 @@ export default function RequestScreen({route}: RequestScreenProps) {
   useEffect(() => {
     if (paymentStatus) {
       if (paymentStatus.status === 'CO') {
-        navigation.navigate('PaymentReceivedScreen', {paymentData});
+        navigation.navigate('PaymentReceivedScreen');
       }
     }
   }, [paymentStatus]);
@@ -52,7 +52,9 @@ export default function RequestScreen({route}: RequestScreenProps) {
           <PaymentLinkBox
             onScanPress={() =>
               navigation.navigate('ScanBarCodeScreen', {
+                amount,
                 paymentLink: paymentData.web_url,
+                paymentIdentifier: paymentData.identifier,
               })
             }
             paymentLink={paymentData.web_url}

@@ -14,7 +14,7 @@ export const Box = styled.View`
   flex-direction: row;
   align-items: center;
   background-color: #eaf3ff;
-  margin-top: 29px;
+  margin-top: 25px;
 `;
 
 export const BoxText = styled.Text`
@@ -35,8 +35,7 @@ export const ImageBox = styled.View`
   border-radius: 6px;
   padding: 12px;
   background-color: #ffffff;
-  margin-top: 28px;
-  margin-left: 10px;
+  margin-top: 24px;
   justify-content: center;
   align-items: center;
 `;
@@ -49,8 +48,8 @@ export const StyledImage = styled.Image`
 
 export const AmountText = styled.Text`
   color: white;
-  font-size: 24px;
-  margin-top: 30px;
+  font-size: 26px;
+  margin-top: 24px;
   text-align: center;
   font-weight: bold;
 `;
@@ -58,6 +57,6 @@ export const AmountText = styled.Text`
 export const AutoUpdateText = styled.Text`
   color: white;
   font-size: 16px;
-  margin-top: 30px;
+  margin-top: 24px;
   text-align: center;
 `;

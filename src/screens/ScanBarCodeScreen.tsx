@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {TouchableOpacity} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -15,13 +15,25 @@ import {
 import QRCode from 'react-native-qrcode-svg';
 import qrCodeImage from '../assets/images/qrCode.png';
 import {ScanBarCodeScreenProps} from '../types';
+import {usePaymentWebSocket} from '../hooks/usePaymentWebSocket';
+import LoadingOverlay from '../components/atoms/LoadingOverlay';
 
 export default function ScanBarCodeScreen({route}: ScanBarCodeScreenProps) {
   const navigation = useNavigation();
-  const {amount, paymentLink} = route.params as {
+  const {amount, paymentLink, paymentIdentifier} = route.params as {
     amount: string;
     paymentLink: string;
+    paymentIdentifier: string;
   };
+  const paymentStatus = usePaymentWebSocket(paymentIdentifier);
+
+  useEffect(() => {
+    if (paymentStatus) {
+      if (paymentStatus.status === 'CO') {
+        navigation.navigate('PaymentReceivedScreen');
+      }
+    }
+  }, [paymentStatus, navigation]);
 
   return (
     <Container>
@@ -57,6 +69,9 @@ export default function ScanBarCodeScreen({route}: ScanBarCodeScreenProps) {
         Esta pantalla se actualizará automáticamente.
       </AutoUpdateText>
       <Overlay />
+      {paymentStatus?.status === 'AC' && (
+        <LoadingOverlay message="Estamos procesando el pago..." />
+      )}
     </Container>
   );
 }
