@@ -1,15 +1,14 @@
 import React, {useState} from 'react';
 import styled from 'styled-components/native';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import Icon from 'react-native-vector-icons/Feather';
 import {
-  TextInput,
   TextInputProps,
   StyleProp,
   ViewStyle,
   TouchableOpacity,
+  Image,
 } from 'react-native';
-import {useNavigation} from '@react-navigation/native';
-import Popup from './Popup'; // Import the Popup component
+import Popup from '../../Popup';
 
 const Container = styled.View<{isFocused: boolean}>`
   flex-direction: row;
@@ -56,7 +55,8 @@ const SendButtonText = styled.Text`
 
 const PrefixText = styled.Text`
   color: #002859;
-  margin-right: 8px;
+  margin-right: 4px;
+  font-weight: 500;
 `;
 
 interface CustomInputProps extends TextInputProps {
@@ -67,19 +67,20 @@ interface CustomInputProps extends TextInputProps {
   showSendButton?: boolean;
   prefix?: string;
   onSendPress?: () => void;
+  image?: any;
 }
 
 const CustomInput: React.FC<CustomInputProps> = ({
   style,
   value,
   onChangeText,
-  iconName = 'link',
   iconName2 = '',
   onIcon2Press,
   editable = false,
   showSendButton = false,
   prefix = '',
   onSendPress,
+  image,
 }) => {
   const [isFocused, setIsFocused] = useState(false);
   const [isPopupVisible, setIsPopupVisible] = useState(false);
@@ -94,15 +95,17 @@ const CustomInput: React.FC<CustomInputProps> = ({
   return (
     <>
       <Container style={style} isFocused={isFocused}>
-        <StyledIcon>
-          <FontAwesome name={iconName} size={24} color="#035AC5" />
-        </StyledIcon>
+        {image && (
+          <StyledIcon>
+            <Image source={image} style={{width: 24, height: 24}} />
+          </StyledIcon>
+        )}
         {prefix && (
           <>
             <PrefixText>{prefix}</PrefixText>
             {iconName2 && (
               <TouchableOpacity onPress={onIcon2Press}>
-                <FontAwesome name={iconName2} size={24} color="#035AC5" />
+                <Icon name={iconName2} size={23} color="#002859" />
               </TouchableOpacity>
             )}
           </>
@@ -123,7 +126,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
         )}
         {!prefix && iconName2 && (
           <TouchableOpacity onPress={onIcon2Press}>
-            <FontAwesome name={iconName2} size={24} color="#035AC5" />
+            <Icon name={iconName2} size={24} color="#035AC5" />
           </TouchableOpacity>
         )}
       </Container>

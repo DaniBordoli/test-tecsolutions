@@ -1,4 +1,3 @@
-// src/components/atoms/DescriptionInput.tsx
 import React, {useState} from 'react';
 import styled from 'styled-components/native';
 

@@ -1,47 +1,37 @@
 import React, {useState} from 'react';
-import {View, FlatList, TouchableOpacity} from 'react-native';
+import {View, FlatList} from 'react-native';
 import {Container, Navbar, Title} from '../styles/HomeScreenStyles';
-import Icon from 'react-native-vector-icons/Ionicons';
-import CurrencyItem from '../components/CurrencyItem';
-import SearchInput from '../components/SearchInput';
+import CurrencyItem from '../components/molecules/CurrencyItem/CurrencyItem';
+import SearchInput from '../components/molecules/SearchInput/SearchInput';
+import {Currency} from '../types/currency';
+import {currencies} from '../utils/currenciesData';
+import BackButton from '../components/atoms/BackButton';
+import {CurrencySelectProps} from '../types';
 
-const currencies = [
-  {
-    name: 'Dolar Estadounidense',
-    code: '$',
-    symbol: 'USD',
-    imageSource: require('../assets/images/flagUsa.png'),
-  },
-  {
-    name: 'Euro',
-    code: '€',
-    symbol: 'EUR',
-    imageSource: require('../assets/images/flagRounded.png'),
-  },
-  {
-    name: 'Libra Esterlina',
-    code: '£',
-    symbol: 'GBP',
-    imageSource: require('../assets/images/flagUk.png'),
-  },
-];
+export default function CurrencySelect({
+  navigation,
+  route,
+}: CurrencySelectProps) {
+  const {onSelect, selectedCurrency: initialSelectedCurrency} = route.params;
+  const [search, setSearch] = useState<string>('');
+  const [filteredCurrencies, setFilteredCurrencies] =
+    useState<Currency[]>(currencies);
+  const [selectedCurrency, setSelectedCurrency] = useState<string | null>(
+    initialSelectedCurrency?.code || null,
+  );
 
-export default function CurrencySelect({navigation, route}) {
-  const {onSelect} = route.params;
-  const [search, setSearch] = useState('');
-  const [filteredCurrencies, setFilteredCurrencies] = useState(currencies);
-
-  const handlePress = currency => {
+  const handlePress = (currency: Currency) => {
+    setSelectedCurrency(currency.code);
     onSelect(currency);
     navigation.goBack();
   };
 
-  const handleSearch = text => {
+  const handleSearch = (text: string) => {
     setSearch(text);
     setFilteredCurrencies(
       currencies.filter(
         currency =>
-          currency.name.toLowerCase().includes(text.toLowerCase()) ||
+          (currency.name?.toLowerCase() || '').includes(text.toLowerCase()) ||
           currency.code.toLowerCase().includes(text.toLowerCase()),
       ),
     );
@@ -50,16 +40,7 @@ export default function CurrencySelect({navigation, route}) {
   return (
     <Container>
       <Navbar>
-        <TouchableOpacity
-          style={{
-            backgroundColor: '#EFF2F7',
-            borderRadius: 50,
-            padding: 10,
-            marginRight: 10,
-          }}
-          onPress={() => navigation.goBack()}>
-          <Icon name="arrow-back" size={24} color="#002859" />
-        </TouchableOpacity>
+        <BackButton onPress={() => navigation.goBack()} />
         <Title>Selecciona una divisa</Title>
       </Navbar>
       <View style={{alignItems: 'center'}}>
@@ -76,9 +57,10 @@ export default function CurrencySelect({navigation, route}) {
           renderItem={({item}) => (
             <CurrencyItem
               imageSource={item.imageSource}
+              currencyCode={item.code}
               currencyName={item.name}
-              currencyCode={item.symbol}
               onPress={() => handlePress(item)}
+              selected={item.code === selectedCurrency}
             />
           )}
         />

@@ -1,4 +1,3 @@
-// src/components/atoms/LoadingOverlay.tsx
 import React from 'react';
 import {ActivityIndicator} from 'react-native';
 import styled from 'styled-components/native';

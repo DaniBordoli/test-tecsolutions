@@ -1,7 +1,7 @@
 import {useEffect, useState} from 'react';
 
 interface PaymentStatusMessage {
-  status: string; // Por ejemplo, 'pending', 'completed', 'failed', etc.
+  status: string;
   [key: string]: any;
 }
 
@@ -17,9 +17,7 @@ export function usePaymentWebSocket(identifier: string) {
       `wss://payments.pre-bnvo.com/ws/merchant/${identifier}`,
     );
 
-    socket.onopen = () => {
-      console.log('WebSocket connection opened');
-    };
+    socket.onopen = () => {};
 
     socket.onmessage = event => {
       try {
@@ -34,9 +32,7 @@ export function usePaymentWebSocket(identifier: string) {
       console.error('WebSocket error:', error);
     };
 
-    socket.onclose = () => {
-      console.log('WebSocket connection closed');
-    };
+    socket.onclose = () => {};
 
     return () => {
       socket.close();

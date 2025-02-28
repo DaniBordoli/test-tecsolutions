@@ -1,4 +1,3 @@
-// src/screens/RequestScreen.tsx
 import React, {useEffect, useState} from 'react';
 import {ScrollView} from 'react-native';
 import {Container, ContainerButton} from '../styles/RequestScreenStyles';
@@ -9,18 +8,18 @@ import CustomButton from '../components/atoms/CustomButton';
 import {useNavigation} from '@react-navigation/native';
 import {usePaymentWebSocket} from '../hooks/usePaymentWebSocket';
 import LoadingOverlay from '../components/atoms/LoadingOverlay';
+import {RequestScreenProps} from '../types';
 
-export default function RequestScreen({route}) {
-  const {amount, description, currency, paymentData} = route.params;
+export default function RequestScreen({route}: RequestScreenProps) {
+  const {amount, paymentData} = route.params;
   const navigation = useNavigation();
-  const [countryCode, setCountryCode] = useState('+34');
-  const [phoneNumber, setPhoneNumber] = useState('');
-  const [showSendButton, setShowSendButton] = useState(false);
-  const [isValid, setIsValid] = useState(true);
+  const [countryCode, setCountryCode] = useState<string>('+34');
+  const [phoneNumber, setPhoneNumber] = useState<string>('');
+  const [showSendButton, setShowSendButton] = useState<boolean>(false);
+  const [isValid, setIsValid] = useState<boolean>(true);
+  const [selectedCountry, setSelectedCountry] = useState('+34');
 
   const paymentStatus = usePaymentWebSocket(paymentData.identifier);
-
-  console.log('paymentStatus', paymentStatus);
 
   useEffect(() => {
     if (paymentStatus) {
@@ -32,11 +31,12 @@ export default function RequestScreen({route}) {
 
   const handleCountrySelect = (selectedCode: string) => {
     setCountryCode(selectedCode);
+    setSelectedCountry(selectedCode);
   };
 
   const handlePhoneNumberChange = (text: string) => {
     const numericText = text.replace(/[^0-9]/g, '');
-    if (numericText.length <= 8) {
+    if (numericText.length <= 10) {
       setPhoneNumber(numericText);
       setShowSendButton(numericText.length > 7);
     }
@@ -65,6 +65,7 @@ export default function RequestScreen({route}) {
             onCountrySelect={() =>
               navigation.navigate('CountrySelectScreen', {
                 onSelect: handleCountrySelect,
+                selectedCountry: selectedCountry,
               })
             }
           />
@@ -74,14 +75,13 @@ export default function RequestScreen({route}) {
               title="Nueva solicitud"
               titleStyle={{color: '#035AC5'}}
               isValid={isValid}
-              disabled={!isValid}
               onPress={() => navigation.goBack()}
             />
           </ContainerButton>
         </Container>
       </ScrollView>
       {paymentStatus && paymentStatus.status === 'AC' && (
-        <LoadingOverlay message="Estamos esperando el pago..." />
+        <LoadingOverlay message="Estamos procesando el pago..." />
       )}
     </>
   );

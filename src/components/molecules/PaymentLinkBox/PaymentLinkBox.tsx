@@ -1,11 +1,12 @@
-// src/components/molecules/PaymentLinkBox.tsx
 import React from 'react';
-import {View, TouchableOpacity, Image} from 'react-native';
-import CustomInput from '../../CustomInput';
+import {TouchableOpacity, Image} from 'react-native';
+import CustomInput from '../../molecules/CustomInput/CustomInput';
 import {ContainerMail} from '../../../styles/RequestScreenStyles';
+import linkIcon from '../../../assets/images/linkIcon.png';
+import Clipboard from '@react-native-clipboard/clipboard';
 
 interface PaymentLinkBoxProps {
-  amount: string;
+  amount?: string;
   onScanPress: () => void;
   paymentLink: string;
 }
@@ -14,18 +15,26 @@ const PaymentLinkBox: React.FC<PaymentLinkBoxProps> = ({
   onScanPress,
   paymentLink,
 }) => {
+  const handleInputPress = () => {
+    Clipboard.setString(paymentLink);
+  };
   return (
     <ContainerMail style={{justifyContent: 'space-between', marginTop: 20}}>
-      <CustomInput
-        style={{width: 267, alignSelf: 'flex-start'}}
-        value={paymentLink}
-        onChangeText={() => {}}
-      />
+      <TouchableOpacity onPress={handleInputPress}>
+        <CustomInput
+          style={{width: 267, alignSelf: 'flex-start'}}
+          value={paymentLink}
+          image={linkIcon}
+          onChangeText={() => {}}
+          editable={false}
+        />
+      </TouchableOpacity>
       <TouchableOpacity
         style={{
           width: 56,
           height: 56,
           borderRadius: 6,
+          marginTop: 20,
           backgroundColor: '#035AC5',
           justifyContent: 'center',
           alignItems: 'center',

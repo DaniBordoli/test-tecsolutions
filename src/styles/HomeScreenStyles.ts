@@ -49,7 +49,7 @@ export const textInput = styled.Text`
   font-weight: bold;
 `;
 
-export const StyledTextInput = styled.TextInput`
+export const StyledTextInput = styled.TextInput<StyledTextInputProps>`
   font-size: 60px;
   font-weight: bold;
   color: ${({isDefault}) => (isDefault ? '#C0CCDA' : '#035AC5')};

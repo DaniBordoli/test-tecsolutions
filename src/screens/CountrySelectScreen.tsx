@@ -1,59 +1,32 @@
 import React, {useState} from 'react';
-import {View, FlatList, TouchableOpacity} from 'react-native';
+import {View, FlatList, TouchableOpacity, ScrollView} from 'react-native';
 import {Container, Navbar, Title} from '../styles/HomeScreenStyles';
 import Icon from 'react-native-vector-icons/Ionicons';
-import SearchInput from '../components/SearchInput';
-import CountryItem from '../components/CountryItem';
+import SearchInput from '../components/molecules/SearchInput/SearchInput';
+import CountryItem from '../components/molecules/CountryItem/CountryItem';
+import {countryCodes} from '../utils/currenciesData';
+import {Country} from '../types/country';
+import {CountrySelectScreenProps} from '../types';
 
-const countryCodes = [
-  {
-    code: '+54',
-    country: 'Argentina',
-    imageSource: require('../assets/images/flagUsa.png'),
-  },
-  {
-    code: '+34',
-    country: 'España',
-    imageSource: require('../assets/images/flagUsa.png'),
-  },
-  {
-    code: '+240',
-    country: 'Equatorial Guinea',
-    imageSource: require('../assets/images/flagUsa.png'),
-  },
-  {
-    code: '+30',
-    country: 'Grecia',
-    imageSource: require('../assets/images/flagUk.png'),
-  },
-  {
-    code: '+500',
-    country: 'South Georgia and the S...',
-    imageSource: require('../assets/images/flagUk.png'),
-  },
-  {
-    code: '+502',
-    country: 'Guatemala',
-    imageSource: require('../assets/images/flagUk.png'),
-  },
-  {
-    code: '+592',
-    country: 'Guyana',
-    imageSource: require('../assets/images/flagUk.png'),
-  },
-];
-
-export default function CountrySelectScreen({navigation, route}) {
+export default function CountrySelectScreen({
+  navigation,
+  route,
+}: CountrySelectScreenProps) {
   const onSelect = route?.params?.onSelect || (() => {});
   const [search, setSearch] = useState('');
   const [filteredCountries, setFilteredCountries] = useState(countryCodes);
+  const initialSelectedCountry = route?.params?.selectedCountry || null;
+  const [selectedCountry, setSelectedCountry] = useState(
+    initialSelectedCountry,
+  );
 
-  const handlePress = country => {
+  const handlePress = (country: Country) => {
+    setSelectedCountry(country.code);
     onSelect(country.code);
     navigation.goBack();
   };
 
-  const handleSearch = text => {
+  const handleSearch = (text: string) => {
     setSearch(text);
     setFilteredCountries(
       countryCodes.filter(
@@ -79,7 +52,7 @@ export default function CountrySelectScreen({navigation, route}) {
         </TouchableOpacity>
         <Title>Selecciona un país</Title>
       </Navbar>
-      <View style={{alignItems: 'center'}}>
+      <View style={{alignItems: 'center', flex: 1}}>
         <SearchInput
           placeholder="Buscar país"
           placeholderTextColor="#ccc"
@@ -87,18 +60,23 @@ export default function CountrySelectScreen({navigation, route}) {
           onChangeText={handleSearch}
           style={{padding: 10, borderColor: '#ccc', borderWidth: 1, margin: 10}}
         />
-        <FlatList
-          data={filteredCountries}
-          keyExtractor={item => item.code}
-          renderItem={({item}) => (
-            <CountryItem
-              countryName={item.country}
-              countryCode={item.code}
-              imageSource={item.imageSource}
-              onPress={() => handlePress(item)}
+        <ScrollView style={{flex: 1}}>
+          <View style={{height: '100%'}}>
+            <FlatList
+              data={filteredCountries}
+              keyExtractor={item => item.code}
+              renderItem={({item}) => (
+                <CountryItem
+                  countryName={item.country}
+                  countryCode={item.code}
+                  imageSource={item.imageSource}
+                  onPress={() => handlePress(item)}
+                  selected={item.code === selectedCountry}
+                />
+              )}
             />
-          )}
-        />
+          </View>
+        </ScrollView>
       </View>
     </Container>
   );

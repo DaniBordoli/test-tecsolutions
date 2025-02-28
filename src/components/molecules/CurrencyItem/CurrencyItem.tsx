@@ -1,7 +1,8 @@
-import React from 'react';
+import React, {useState} from 'react';
 import styled from 'styled-components/native';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { TouchableOpacity } from 'react-native';
+import {TouchableOpacity} from 'react-native';
+import {CurrencyItemProps} from '../../../types/currency';
 
 const CurrencyContainer = styled.View`
   flex-direction: row;
@@ -9,6 +10,8 @@ const CurrencyContainer = styled.View`
   margin-top: 20px;
   margin-left: 20px;
   width: 100%;
+  background-color: ${props => (props.pressed ? '#EFF2F7' : 'transparent')};
+  padding: 10px 0;
 `;
 
 const CurrencyImage = styled.Image`
@@ -36,17 +39,43 @@ const ChevronIcon = styled(Icon)`
   color: gray;
 `;
 
-export default function CurrencyItem({ imageSource, currencyName, currencyCode, onPress }) {
+const SelectedIcon = styled(Icon)`
+  margin-left: auto;
+  margin-right: 70px;
+  color: #002859;
+`;
+
+const CurrencyItem: React.FC<CurrencyItemProps> = ({
+  imageSource,
+  currencyName,
+  currencyCode,
+  onPress,
+  selected,
+}) => {
+  const [pressed, setPressed] = useState(false);
+
   return (
-    <TouchableOpacity onPress={onPress}>
-      <CurrencyContainer>
+    <TouchableOpacity
+      activeOpacity={1}
+      onPressIn={() => setPressed(true)}
+      onPressOut={() => setPressed(false)}
+      onPress={() => {
+        onPress();
+      }}>
+      <CurrencyContainer pressed={pressed}>
         <CurrencyImage source={imageSource} />
         <CurrencyText>
           <CurrencyName bold>{currencyName}</CurrencyName>
           <CurrencyName gray>{currencyCode}</CurrencyName>
         </CurrencyText>
-        <ChevronIcon name="chevron-forward" size={24} color="#002859" />
+        {selected ? (
+          <SelectedIcon name="checkmark-circle" size={24} />
+        ) : (
+          <ChevronIcon name="chevron-forward" size={24} />
+        )}
       </CurrencyContainer>
     </TouchableOpacity>
   );
-}
+};
+
+export default CurrencyItem;

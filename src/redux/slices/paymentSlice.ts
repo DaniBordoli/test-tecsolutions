@@ -1,4 +1,3 @@
-// src/redux/slices/paymentSlice.ts
 import {createSlice, createAsyncThunk} from '@reduxjs/toolkit';
 import {PaymentState} from '../../types';
 import axios from 'axios';
@@ -6,6 +5,7 @@ import {API_ENDPOINT, DEVICE_ID} from '@config/api';
 
 const initialState: PaymentState = {
   loading: false,
+  paymentData: null,
 };
 
 export const createPayment = createAsyncThunk(
@@ -26,7 +26,7 @@ export const createPayment = createAsyncThunk(
         API_ENDPOINT,
         {
           expected_output_amount: numericAmount,
-          fiat: paymentPayload.currency.symbol,
+          fiat: paymentPayload.currency.code,
           reference: paymentPayload.description,
         },
         {
@@ -36,7 +36,6 @@ export const createPayment = createAsyncThunk(
           },
         },
       );
-      console.log('ORDEN CREADA', response.data);
       return response.data;
     } catch (error: any) {
       return thunkAPI.rejectWithValue(
@@ -49,7 +48,13 @@ export const createPayment = createAsyncThunk(
 const paymentSlice = createSlice({
   name: 'payment',
   initialState,
-  reducers: {},
+  reducers: {
+    resetPayment: state => {
+      state.paymentData = null;
+      state.loading = false;
+      state.error = undefined;
+    },
+  },
   extraReducers: builder => {
     builder
       .addCase(createPayment.pending, state => {
@@ -67,4 +72,5 @@ const paymentSlice = createSlice({
   },
 });
 
+export const {resetPayment} = paymentSlice.actions;
 export default paymentSlice.reducer;

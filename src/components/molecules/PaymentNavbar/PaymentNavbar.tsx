@@ -1,4 +1,3 @@
-// src/components/molecules/PaymentNavbar.tsx
 import React from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {

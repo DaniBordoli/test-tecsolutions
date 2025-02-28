@@ -1,8 +1,18 @@
 import React from 'react';
 import styled from 'styled-components/native';
 import Icon from 'react-native-vector-icons/Ionicons';
+import {TextInputProps, ViewStyle} from 'react-native';
 
-const SearchInput = ({ placeholder, placeholderTextColor, style, onChangeText }) => {
+interface SearchInputProps extends TextInputProps {
+  style?: ViewStyle;
+}
+
+const SearchInput: React.FC<SearchInputProps> = ({
+  placeholder,
+  placeholderTextColor,
+  style,
+  onChangeText,
+}) => {
   return (
     <Container>
       <StyledTextInput

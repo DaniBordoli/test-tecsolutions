@@ -1,4 +1,3 @@
-// src/screens/ScanBarCodeScreen.tsx
 import React from 'react';
 import {TouchableOpacity} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
@@ -15,15 +14,14 @@ import {
 } from '../styles/ScanBarCodeStyles';
 import QRCode from 'react-native-qrcode-svg';
 import qrCodeImage from '../assets/images/qrCode.png';
+import {ScanBarCodeScreenProps} from '../types';
 
-export default function ScanBarCodeScreen({route}) {
+export default function ScanBarCodeScreen({route}: ScanBarCodeScreenProps) {
   const navigation = useNavigation();
   const {amount, paymentLink} = route.params as {
     amount: string;
     paymentLink: string;
   };
-
-  console.log('paymentLinkQR', paymentLink);
 
   return (
     <Container>

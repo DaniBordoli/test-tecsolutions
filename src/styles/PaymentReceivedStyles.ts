@@ -7,7 +7,7 @@ export const Container = styled.View`
 `;
 
 export const Box = styled.View`
-  background-color: #EFF2F7;
+  background-color: #eff2f7;
   padding: 20px;
   border-radius: 10px;
   align-items: center;

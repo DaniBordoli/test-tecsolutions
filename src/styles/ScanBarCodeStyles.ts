@@ -36,6 +36,9 @@ export const ImageBox = styled.View`
   padding: 12px;
   background-color: #ffffff;
   margin-top: 28px;
+  margin-left: 10px;
+  justify-content: center;
+  align-items: center;
 `;
 
 export const StyledImage = styled.Image`

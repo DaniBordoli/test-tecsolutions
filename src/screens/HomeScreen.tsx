@@ -1,4 +1,3 @@
-// src/screens/HomeScreen.tsx
 import React, {useState, useEffect} from 'react';
 import {ScrollView} from 'react-native';
 import {
@@ -8,11 +7,7 @@ import {
 } from '../styles/HomeScreenStyles';
 import {useAppDispatch, useAppSelector} from '../redux/store/hook';
 import {createPayment} from '../redux/slices/paymentSlice';
-import {
-  selectPaymentLoading,
-  selectPaymentData,
-  selectPaymentError,
-} from '../redux/selectors';
+import {selectPaymentLoading, selectPaymentData} from '../redux/selectors';
 import LoadingOverlay from '../components/atoms/LoadingOverlay';
 import PaymentNavbar from '../components/molecules/PaymentNavbar/PaymentNavbar';
 import PaymentDetails from '../components/molecules/PaymentDetails/PaymentDetails';
@@ -21,7 +16,7 @@ import {parseAmount} from '../utils/parseAmount';
 import {Currency} from '../types/currency';
 
 interface HomeScreenProps {
-  navigation: any; // Puedes usar el tipo adecuado de React Navigation
+  navigation: any;
 }
 
 export default function HomeScreen({navigation}: HomeScreenProps) {
@@ -38,9 +33,6 @@ export default function HomeScreen({navigation}: HomeScreenProps) {
 
   const loading = useAppSelector(selectPaymentLoading);
   const paymentData = useAppSelector(selectPaymentData);
-  const error = useAppSelector(selectPaymentError);
-
-  console.log('paymentState', paymentData);
 
   useEffect(() => {
     const numericValue = parseFloat(
@@ -51,7 +43,6 @@ export default function HomeScreen({navigation}: HomeScreenProps) {
 
   useEffect(() => {
     if (paymentData) {
-      console.log('paymentData en home screen', paymentData);
       navigation.navigate('RequestScreen', {
         paymentData,
         amount,
@@ -67,9 +58,8 @@ export default function HomeScreen({navigation}: HomeScreenProps) {
 
   const handleCurrencySelectButton = (selectedCurrency: Currency): void => {
     setCurrency({symbol: selectedCurrency.symbol, code: selectedCurrency.code});
-    setAmount(`0,00 ${selectedCurrency.code}`);
+    setAmount(`0,00 ${selectedCurrency.symbol}`);
   };
-
   const handleContinuar = (): void => {
     if (!isValid) {
       return;
@@ -84,10 +74,11 @@ export default function HomeScreen({navigation}: HomeScreenProps) {
         keyboardShouldPersistTaps="handled">
         <Container>
           <PaymentNavbar
-            currencySymbol={currency.symbol}
+            currencySymbol={currency.code}
             onSelect={() =>
               navigation.navigate('CurrencySelect', {
                 onSelect: handleCurrencySelectButton,
+                selectedCurrency: currency,
               })
             }
           />

@@ -1,4 +1,3 @@
-// src/redux/store/store.ts
 import {configureStore} from '@reduxjs/toolkit';
 import paymentReducer from '../slices/paymentSlice';
 
